@@ -134,7 +134,6 @@ GOOGLE_CLIENT_SECRET=seu_client_secret
 3. Configure as variáveis de ambiente no arquivo `.env`:
 
    ```env
-   NEXTAUTH_URL=http://localhost:3000
    GOOGLE_CLIENT_ID=seu_client_id
    GOOGLE_CLIENT_SECRET=seu_client_secret
    ```
