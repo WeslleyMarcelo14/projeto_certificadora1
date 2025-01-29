@@ -39,7 +39,7 @@ const Sidebar = () => {
                 isSidebarOpen ? "translate-x-0 opacity-100" : "-translate-x-96 opacity-0 hidden"
               )}
             >
-              Brand
+              Certificadora 1
             </h1>
           </Link>
         </Button>
