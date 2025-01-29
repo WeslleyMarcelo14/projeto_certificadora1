@@ -3,7 +3,7 @@
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button-login";
 import Image from "next/image";
 import { FcGoogle } from "react-icons/fc";
 
@@ -11,26 +11,8 @@ export default function Home() {
   const { status } = useSession();
   const router = useRouter();
 
-  // Em vez de iniciar com "/bg.jpg" ou "", inicie com null para evitar qualquer src vazio
-  const [bgSrc, setBgSrc] = useState(null);
-
-  // Verifica se a imagem /bg.jpg existe (opcional)
-  useEffect(() => {
-    const checkImageExists = async () => {
-      try {
-        // Tenta buscar a imagem
-        const res = await fetch("/bg.jpg");
-        if (res.ok) {
-          setBgSrc("/bg.jpg"); // Se existir, define o src
-        } else {
-          setBgSrc(null); // Se não existir, não renderiza a imagem
-        }
-      } catch (err) {
-        setBgSrc(null);
-      }
-    };
-    checkImageExists();
-  }, []);
+  // Definição direta da imagem de fundo, já que ela sempre existe
+  const [bgSrc] = useState("/bg.jpg");
 
   // Caso o usuário já esteja logado, manda pro dashboard
   useEffect(() => {
@@ -60,8 +42,7 @@ export default function Home() {
 
         {/* Seção Direita: Imagem de fundo */}
         <div className="relative hidden md:block">
-          {/* Só renderiza o <Image> se bgSrc não for null */}
-          {bgSrc && <Image className="object-cover" fill src={bgSrc} alt="Imagem de fundo relacionada ao projeto" />}
+          <Image className="object-cover" fill src={bgSrc} alt="Imagem de fundo relacionada ao projeto" />
         </div>
       </div>
     </main>
