@@ -1,0 +1,69 @@
+"use client";
+
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { FcGoogle } from "react-icons/fc";
+
+export default function Home() {
+  const { status } = useSession();
+  const router = useRouter();
+
+  // Em vez de iniciar com "/bg.jpg" ou "", inicie com null para evitar qualquer src vazio
+  const [bgSrc, setBgSrc] = useState(null);
+
+  // Verifica se a imagem /bg.jpg existe (opcional)
+  useEffect(() => {
+    const checkImageExists = async () => {
+      try {
+        // Tenta buscar a imagem
+        const res = await fetch("/bg.jpg");
+        if (res.ok) {
+          setBgSrc("/bg.jpg"); // Se existir, define o src
+        } else {
+          setBgSrc(null); // Se não existir, não renderiza a imagem
+        }
+      } catch (err) {
+        setBgSrc(null);
+      }
+    };
+    checkImageExists();
+  }, []);
+
+  // Caso o usuário já esteja logado, manda pro dashboard
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/dashboard");
+    }
+  }, [status, router]);
+
+  return (
+    <main className="h-screen flex items-center justify-center bg-softPink p-10">
+      <div className="grid w-full h-full grid-cols-1 md:grid-cols-2 bg-lightPink">
+        {/* Seção Esquerda: Info + Login */}
+        <div className="flex flex-col items-center justify-center bg-mediumPink text-softPink p-6">
+          <h1 className="text-5xl font-bold mb-8">Projeto Bons Fluidos</h1>
+          <p className="text-lg text-white mb-6 text-center">Bem-vindo ao painel de gerenciamento de doações do projeto Bons Fluidos.</p>
+          <p className="text-md text-white mb-6 text-center">
+            Faça login usando sua conta <strong>@alunos.utfpr.edu.br</strong>. Este acesso é exclusivo para estudantes da UTFPR.
+          </p>
+          <Button onClick={() => signIn("google")}>
+            <FcGoogle size={25} className="mr-2" />
+            Faça login com Google
+          </Button>
+          <a href="https://www.instagram.com/bonsfluidosutfpr/" target="_blank" rel="noopener noreferrer" className="mt-6 text-sm text-lightPink hover:text-white transition-all">
+            Acesse o nosso Instagram: @bonsfluidosutfpr
+          </a>
+        </div>
+
+        {/* Seção Direita: Imagem de fundo */}
+        <div className="relative hidden md:block">
+          {/* Só renderiza o <Image> se bgSrc não for null */}
+          {bgSrc && <Image className="object-cover" fill src={bgSrc} alt="Imagem de fundo relacionada ao projeto" />}
+        </div>
+      </div>
+    </main>
+  );
+}
