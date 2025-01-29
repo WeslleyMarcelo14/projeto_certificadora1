@@ -1,23 +1,20 @@
 import { useState, useEffect } from "react";
 
 /**
- * Este hook corrige problemas de hidratação ao usar persistência para salvar dados no localStorage.
- * @param {Function} store - A função do estado global (ex.: zustand).
- * @param {Function} callback - Uma função que seleciona ou transforma o estado desejado.
- * @returns {any} - O dado selecionado ou transformado, sincronizado com o estado global.
+ * Hook para corrigir problemas de hidratação ao usar persistência no localStorage.
+ * Ele sincroniza um estado global (ex.: Zustand) com o estado local do React.
  */
 export const useStore = (store, callback) => {
   // Obtém o valor atual do estado global com base no callback fornecido
   const result = store(callback);
 
-  // Estado local para armazenar o resultado
+  // Estado local para armazenar o resultado e evitar problemas de hidratação
   const [data, setData] = useState();
 
-  // Efeito para atualizar o estado local sempre que o resultado mudar
+  // Atualiza o estado local sempre que o resultado mudar
   useEffect(() => {
-    setData(result); // Atualiza o estado local com o resultado do estado global
+    setData(result);
   }, [result]);
 
-  // Retorna o dado sincronizado
-  return data;
+  return data; // Retorna o dado sincronizado
 };
