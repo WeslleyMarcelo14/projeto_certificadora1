@@ -37,7 +37,6 @@
     "src/app/auth",
     "src/components/ui/tooltip.jsx",
     "src/app/estoque/page.jsx",
-    "src/components/ui/sheet.jsx",
     "src/components/ui/scroll-area.jsx",
     "src/components/ui/dropdown-menu.jsx",
     "src/components/ui/collapsible.jsx",
