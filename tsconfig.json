@@ -53,7 +53,10 @@
     "src/components/dashboard/collapse-menu-button.jsx",
     "src/app/providers.jsx",
     "src/components/dashboard/navbar.jsx",
-    "/login/layout.tsx"
+    "/login/layout.tsx",
+    "src/app/api/auth/[...nextauth]/route.js",
+    "src/lib/utils.js",
+    "src/app/usuarios/page.jsx"
   ],
   "exclude": ["node_modules"]
 }
