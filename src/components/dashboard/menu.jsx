@@ -75,9 +75,7 @@ const MenuItems = ({ menus, pathname, isOpen }) =>
 
 // Componente do botão de logout fixado no rodapé do menu
 const LogoutButton = ({ isOpen }) => {
-  const handleLogout = async () => {
-    await signOut({ callbackUrl: "/auth/login" });
-  };
+  const handleLogout = async () => await signOut({ callbackUrl: "/auth/login" });
 
   return (
     <li className="w-full grow flex items-end">
