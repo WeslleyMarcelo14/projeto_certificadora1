@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { MenuIcon, PanelsTopLeft } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import Menu from "@/components/dashboard/menu";
 import { Sheet, SheetHeader, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -26,7 +25,7 @@ const SheetMenu = () => (
         </Button>
       </SheetHeader>
 
-      {/* Renderiza o menu lateral com estado aberto */}
+      {/* Renderiza o menu lateral aberto */}
       <Menu isOpen />
     </SheetContent>
   </Sheet>
