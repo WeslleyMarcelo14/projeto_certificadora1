@@ -6,7 +6,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 
 const PainelPage = () => (
   <ContentLayout title="Painel">
-    {/* Breadcrumb para navegação */}
+    {/* Navegação breadcrumb */}
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
@@ -21,11 +21,11 @@ const PainelPage = () => (
       </BreadcrumbList>
     </Breadcrumb>
 
-    {/* Seção de boas-vindas ao painel */}
-    <div className="mt-6 p-6 bg-white rounded-lg shadow">
+    {/* Seção de boas-vindas */}
+    <section className="mt-6 p-6 bg-white rounded-lg shadow">
       <h2 className="text-xl font-semibold">Bem-vindo ao Painel</h2>
       <p className="text-gray-600 mt-2">Aqui você pode gerenciar doações, acompanhar o estoque e visualizar relatórios detalhados.</p>
-    </div>
+    </section>
   </ContentLayout>
 );
 
