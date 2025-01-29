@@ -22,13 +22,12 @@ const RootLayout = ({ children }) => (
 const ContentWithSession = ({ children }) => {
   const pathname = usePathname();
   const { status } = useSession();
-  const isAuthPage = pathname.startsWith("/auth/login");
 
   if (status === "loading") {
     return <div className="flex items-center justify-center h-screen text-lg font-semibold">Carregando...</div>;
   }
 
-  return isAuthPage ? children : <DashboardLayout>{children}</DashboardLayout>;
+  return pathname.startsWith("/auth/login") ? children : <DashboardLayout>{children}</DashboardLayout>;
 };
 
 export default RootLayout;
