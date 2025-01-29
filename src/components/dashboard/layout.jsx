@@ -7,17 +7,17 @@ import { useStore } from "@/hooks/use-store";
 import { cn } from "@/lib/utils";
 
 const AdminPanelLayout = ({ children }) => {
-  // Obtém o estado do sidebar do store
+  // Obtém o estado do sidebar
   const sidebar = useStore(useSidebar, (x) => x);
 
-  // Se o sidebar ainda não carregou, não renderiza nada
+  // Evita renderizar antes do carregamento do estado do sidebar
   if (!sidebar) return null;
 
   const { getOpenState, settings } = sidebar;
   const isSidebarOpen = getOpenState();
 
-  // Define a margem lateral dependendo do estado do sidebar
-  const marginClass = !settings.disabled ? (isSidebarOpen ? "lg:ml-72" : "lg:ml-[90px]") : "";
+  // Define a margem lateral dinamicamente
+  const marginClass = settings.disabled ? "" : isSidebarOpen ? "lg:ml-72" : "lg:ml-[90px]";
 
   return (
     <>
