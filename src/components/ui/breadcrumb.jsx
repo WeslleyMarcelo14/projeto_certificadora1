@@ -1,9 +1,9 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import { ChevronRightIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils";
 
-const Breadcrumb = forwardRef(({ ...props }, ref) => <nav ref={ref} aria-label="breadcrumb" {...props} />);
+const Breadcrumb = forwardRef((props, ref) => <nav ref={ref} aria-label="breadcrumb" {...props} />);
 Breadcrumb.displayName = "Breadcrumb";
 
 const BreadcrumbList = forwardRef(({ className, ...props }, ref) => (
