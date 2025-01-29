@@ -6,7 +6,7 @@ const ContentLayout = ({ title, children }) => (
     <Navbar title={title} />
 
     {/* Container principal para o conteúdo */}
-    <div className="container pt-8 pb-8 px-4 sm:px-8">{children}</div>
+    <section className="container pt-8 pb-8 px-4 sm:px-8">{children}</section>
   </div>
 );
 
