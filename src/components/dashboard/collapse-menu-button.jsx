@@ -5,16 +5,15 @@ import { useState } from "react";
 import { ChevronDown, Dot } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 
-const CollapseMenuButton = ({ icon: Icon, label, active, submenus, isOpen }) => {
+const CollapseMenuButton = ({ icon: Icon, label, submenus, isOpen }) => {
   const pathname = usePathname();
-  const isSubmenuActive = submenus.some(({ href, active }) => (active !== undefined ? active : href === pathname));
+  const isSubmenuActive = submenus.some(({ href, active }) => active ?? href === pathname);
   const [isCollapsed, setIsCollapsed] = useState(isSubmenuActive);
 
   return isOpen ? (
@@ -24,11 +23,11 @@ const CollapseMenuButton = ({ icon: Icon, label, active, submenus, isOpen }) => 
   );
 };
 
-// Componente para menus colapsáveis quando o menu está aberto
+// Menu colapsável quando o menu está aberto
 const CollapsibleMenu = ({ icon: Icon, label, submenus, isCollapsed, setIsCollapsed, isSubmenuActive, pathname }) => (
   <Collapsible open={isCollapsed} onOpenChange={setIsCollapsed} className="w-full">
-    <CollapsibleTrigger className="mb-1" asChild>
-      <Button variant={isSubmenuActive ? "secondary" : "ghost"} className="w-full h-10 justify-start">
+    <CollapsibleTrigger asChild>
+      <Button variant={isSubmenuActive ? "secondary" : "ghost"} className="w-full h-10 justify-start mb-1">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center">
             <Icon size={18} className="mr-4" />
@@ -46,7 +45,7 @@ const CollapsibleMenu = ({ icon: Icon, label, submenus, isCollapsed, setIsCollap
   </Collapsible>
 );
 
-// Componente para menus suspensos quando o menu está fechado
+// Menu suspenso quando o menu está fechado
 const DropdownMenuComponent = ({ icon: Icon, label, submenus, isSubmenuActive, pathname }) => (
   <DropdownMenu>
     <TooltipProvider>
@@ -71,7 +70,7 @@ const DropdownMenuComponent = ({ icon: Icon, label, submenus, isSubmenuActive, p
       <DropdownMenuSeparator />
       {submenus.map(({ href, label, active }, index) => (
         <DropdownMenuItem key={index} asChild>
-          <Link href={href} className={`cursor-pointer ${(active ?? pathname === href) && "bg-secondary"}`}>
+          <Link href={href} className={`cursor-pointer ${active ?? pathname === href ? "bg-secondary" : ""}`}>
             <p className="max-w-[180px] truncate">{label}</p>
           </Link>
         </DropdownMenuItem>
@@ -81,7 +80,7 @@ const DropdownMenuComponent = ({ icon: Icon, label, submenus, isSubmenuActive, p
   </DropdownMenu>
 );
 
-// Componente reutilizável para itens de menu colapsáveis
+// Itens de menu reutilizáveis para menus colapsáveis
 const MenuItem = ({ href, label, active }) => (
   <Button variant={active ? "secondary" : "ghost"} className="w-full h-10 justify-start mb-1" asChild>
     <Link href={href}>
