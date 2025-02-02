@@ -11,16 +11,17 @@ const UserType = {
   ADMIN: "Administrador",
 };
 
+const getUserRole = (user) => {
+  if (user?.isAdmin) return UserType.ADMIN;
+  if (user?.isApproved) return UserType.COMMON;
+  return UserType.PENDING;
+};
+
 const SettingsProfile = () => {
   const { data: session } = useSession();
   const user = session?.user || {};
-  user.isAdmin = false;
-  user.isApproved = true;
+  const userType = getUserRole(user);
 
-  // Determina o tipo de usuário
-  const userType = user.isAdmin ? UserType.ADMIN : user.isApproved ? UserType.COMMON : UserType.PENDING;
-
-  // Permissões baseadas no tipo
   const userPermissions = {
     canManageTasks: userType !== UserType.PENDING,
     canManageStock: userType !== UserType.PENDING,
@@ -29,7 +30,6 @@ const SettingsProfile = () => {
     canManageMessages: userType === UserType.ADMIN,
   };
 
-  // Mapeamento de labels
   const permissionLabels = {
     canManageTasks: "Tarefas",
     canManageStock: "Estoque",
@@ -41,14 +41,13 @@ const SettingsProfile = () => {
   return (
     <Card className="w-full max-w-3xl">
       <CardContent className="flex flex-col md:flex-row gap-8 pt-6">
-        {/* Seção Avatar */}
+        {/* Avatar e status */}
         <div className="flex flex-col items-center gap-4 w-full md:w-auto">
           <Avatar className="h-32 w-32 border-2 border-muted">
             <AvatarImage src={user.image || ""} alt={user.name || "Avatar"} className="object-cover" />
             <AvatarFallback className="bg-muted text-foreground text-3xl font-medium">{user.name ? user.name.charAt(0) : "?"}</AvatarFallback>
           </Avatar>
 
-          {/* Badge de Tipo de Usuário */}
           <div
             className={`px-4 py-2 rounded-full flex items-center gap-2 ${
               userType === UserType.ADMIN ? "bg-purple-100 text-purple-800" : userType === UserType.COMMON ? "bg-blue-100 text-blue-800" : "bg-orange-100 text-orange-800"
@@ -59,45 +58,27 @@ const SettingsProfile = () => {
           </div>
         </div>
 
-        {/* Seção Informações */}
+        {/* Informações do usuário */}
         <div className="grid gap-6 w-full">
           <div className="space-y-4">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-muted">
-                <FiUser className="h-5 w-5 text-foreground" />
+            {[
+              { icon: <FiUser className="h-5 w-5 text-foreground" />, label: "Nome completo", value: user.name || "Usuário" },
+              { icon: <FiMail className="h-5 w-5 text-foreground" />, label: "Endereço de e-mail", value: user.email || "email@example.com" },
+              { icon: <FiKey className="h-5 w-5 text-foreground" />, label: "Identificação do usuário", value: user.id || "N/A", mono: true },
+            ].map(({ icon, label, value, mono }, index) => (
+              <div key={index}>
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-lg bg-muted">{icon}</div>
+                  <div className="space-y-1">
+                    <p className="text-sm text-muted-foreground">{label}</p>
+                    <p className={`font-medium ${mono ? "font-mono text-sm" : ""}`}>{value}</p>
+                  </div>
+                </div>
+                {index < 2 && <hr className="border-t border-muted" />}
               </div>
-              <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">Nome completo</p>
-                <p className="font-medium">{user.name || "THALLYS SILVA DOS SANTOS CORREIA"}</p>
-              </div>
-            </div>
+            ))}
 
-            <hr className="border-t border-muted" />
-
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-muted">
-                <FiMail className="h-5 w-5 text-foreground" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">Endereço de e-mail</p>
-                <p className="font-medium">{user.email || "thallys@alunos.utfpr.edu.br"}</p>
-              </div>
-            </div>
-
-            <hr className="border-t border-muted" />
-
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-muted">
-                <FiKey className="h-5 w-5 text-foreground" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">Identificação do usuário</p>
-                <p className="font-mono font-medium text-sm">{user.id || "N/A"}</p>
-              </div>
-            </div>
-
-            <hr className="border-t border-muted" />
-
+            {/* Permissões do usuário */}
             <div className="space-y-3">
               <h3 className="text-sm font-semibold text-muted-foreground">Acessos Permitidos</h3>
               <div className="grid grid-cols-2 gap-3">
