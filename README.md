@@ -1,32 +1,35 @@
 # Sistema de Gestão e Controle de Tarefas e Estoque
 
-O **Sistema de Gestão e Controle de Tarefas e Estoque** foi concebido para atender organizações que necessitam de uma plataforma centralizada para gerenciar tarefas e doações de estoque. Ele organiza e automatiza processos de registro, acompanhamento e edição de dados, oferecendo funcionalidades específicas para administradores e usuários comuns.
+O Sistema de Gestão e Controle de Tarefas e Estoque é uma plataforma completa para organizações que necessitam de um ambiente centralizado para gerenciar tarefas e controlar doações de estoque. Ele automatiza processos de registro, acompanhamento e edição de dados, oferecendo funcionalidades específicas para administradores e usuários comuns.
 
-O sistema é dividido em módulos que incluem:
+## Sumário
 
-- Controle de tarefas
-- Controle de estoque
-- Gerenciamento de usuários
-- Gerenciamento de produtos
-
-O foco do sistema é garantir usabilidade e eficiência para todos os tipos de usuários.
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Configuração de Autenticação](#configuração-de-autenticação)
+- [Configuração de Cores](#configuração-de-cores)
+- [Variáveis de Ambiente](#variáveis-de-ambiente)
+- [Funcionalidades Principais](#funcionalidades-principais)
+- [Pré-requisitos e Instalação](#pré-requisitos-e-instalação)
+- [Uso via Docker](#uso-via-docker)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
 
 ---
 
 ## Tecnologias Utilizadas
 
-### **Stack Principal:**
+### Stack Principal
 
 - **Next.js** (v15.1.6)
 - **TailwindCSS** (com suporte a animações via `tailwindcss-animate`)
 - **Shadcn** (componentes estilizados)
 - **Radix-UI** (com suporte ao tema via `@radix-ui/themes`)
 
-### **Autenticação:**
+### Autenticação
 
-- **Next-Auth** (v4.24.11) - Login com Google configurado para restringir acesso a usuários da organização UTFPR (`@alunos.utfpr.edu.br`).
+- **Next-Auth** (v4.24.11) – Login com Google, restrito a usuários da organização UTFPR (`@alunos.utfpr.edu.br`).
 
-### **Bibliotecas Adicionais:**
+### Bibliotecas Adicionais
 
 - `autoprefixer` (v10.4.20)
 - `class-variance-authority` (v0.7.1)
@@ -39,17 +42,15 @@ O foco do sistema é garantir usabilidade e eficiência para todos os tipos de u
 
 ## Configuração de Autenticação
 
-Atualmente, o sistema permite login **apenas para usuários da organização UTFPR**, com e-mails no domínio `@alunos.utfpr.edu.br`. Isso elimina a necessidade de gerenciar mecanismos de recuperação de senha, como SMTP ou métodos de recuperação por telefone/e-mail, e simplifica a experiência do usuário.
-
-Para liberar o acesso de usuários externos, basta configurar o **Google** para receber um público-alvo externo (ou remover a verificação de domínio).
+O acesso ao sistema é permitido apenas para usuários com e-mail no domínio `@alunos.utfpr.edu.br`, garantindo segurança e simplicidade ao eliminar a necessidade de recuperação de senha. Para liberar o acesso a usuários externos, configure o Google para abranger um público maior ou remova a verificação de domínio.
 
 ---
 
 ## Configuração de Cores
 
-A paleta de cores do projeto foi selecionada a partir dos posts do Instagram [@bonsfluidosutfpr](https://www.instagram.com/bonsfluidosutfpr/) e pode ser editada em `tailwind.config.ts`.
+A paleta de cores foi inspirada nos posts do Instagram [@bonsfluidosutfpr](https://www.instagram.com/bonsfluidosutfpr/) e pode ser personalizada em `tailwind.config.ts`.
 
-Exemplo de cores atuais:
+Exemplo de configuração de cores:
 
 ```javascript
 theme: {
@@ -71,7 +72,7 @@ theme: {
 
 ## Variáveis de Ambiente
 
-As variáveis de ambiente utilizadas devem ser configuradas no arquivo `.env`, por exemplo:
+Configure as variáveis de ambiente no arquivo `.env`. Exemplo:
 
 ```env
 NEXTAUTH_URL=http://localhost:3000
@@ -85,33 +86,33 @@ FORCE_ADMIN=true
 
 ## Funcionalidades Principais
 
-### **1. Módulo de Tarefas:**
+### 1. Módulo de Tarefas
 
 - Criação, edição e exclusão de tarefas
-- Acompanhamento do progresso de tarefas
+- Acompanhamento do progresso
 - Organização por status e prioridades
 
-### **2. Módulo de Estoque:**
+### 2. Módulo de Estoque
 
 - Registro de itens doados
 - Controle de quantidade e estado do estoque
 - Relatórios detalhados sobre entradas e saídas
 
-### **3. Gerenciamento de Usuários:**
+### 3. Gerenciamento de Usuários
 
 - Administração de permissões (administrador ou usuário comum)
-- Visualização de atividades realizadas por usuários
+- Monitoramento das atividades dos usuários
 
 ---
 
 ## Pré-requisitos e Instalação
 
-### **Requisitos do Sistema:**
+### Requisitos do Sistema
 
 - Node.js (v18 ou superior)
 - Gerenciador de pacotes (NPM ou Yarn)
 
-### **Passos para Instalação:**
+### Instalação
 
 1. **Clone o repositório:**
 
@@ -138,33 +139,33 @@ FORCE_ADMIN=true
    npm run dev
    ```
 
-5. Acesse o sistema em: [http://localhost:3000](http://localhost:3000)
+5. **Acesse o sistema em:**
+   [http://localhost:3000](http://localhost:3000)
 
 ---
 
 ## Uso via Docker
 
-Este projeto possui um **`docker-compose.yml`** e um **`Dockerfile`** na raiz, além de estar disponível como uma imagem pré-compilada no **Docker Hub**:
+O projeto inclui um `docker-compose.yml` e um `Dockerfile` na raiz, além de uma imagem pré-compilada disponível no Docker Hub:
 [**othallys/certificadora1**](https://hub.docker.com/r/othallys/certificadora1)
 
-Existem duas formas de rodar a aplicação via Docker:
+### Opções de Execução
 
-### **1. Usando o `Dockerfile` e `docker-compose.yml` Localmente**
+#### 1. Localmente com Docker Compose
 
-1. Garanta que você tenha o **Docker** e **Docker Compose** instalados.
-2. Ajuste seu `.env` com as variáveis de ambiente necessárias.
-3. Na raiz do projeto, rode:
+1. Certifique-se de ter Docker e Docker Compose instalados.
+2. Configure as variáveis de ambiente no arquivo `.env`.
+3. Na raiz do projeto, execute:
 
    ```bash
    docker compose up -d
    ```
 
-4. O Next.js subirá na porta definida (por exemplo, **4000**).
-5. Acesse: [http://localhost:4000](http://localhost:4000).
+4. Acesse o sistema na porta definida (ex.: [http://localhost:4000](http://localhost:4000)).
 
-### **2. Usando a Imagem Pronta do Docker Hub**
+#### 2. Usando a Imagem do Docker Hub
 
-Se você **não deseja compilar** localmente, basta usar a imagem **`othallys/certificadora1:latest`**:
+Para executar sem compilar localmente, utilize a imagem `othallys/certificadora1:latest`:
 
 ```yaml
 version: "3.8"
@@ -181,11 +182,13 @@ services:
       PORT: 4000
 ```
 
-> Se você precisar de um banco de dados PostgreSQL, inclua também o serviço no `docker-compose.yml` (por exemplo, `postgres`) e defina `DATABASE_URL` conforme necessário.
+> Para utilizar um banco de dados PostgreSQL, inclua o serviço correspondente no `docker-compose.yml` e configure a `DATABASE_URL` conforme necessário.
 
-Para **atualizar** quando houver uma nova versão no Docker Hub:
+Para atualizar a imagem:
 
 ```bash
 docker compose pull
 docker compose up -d
 ```
+
+---
