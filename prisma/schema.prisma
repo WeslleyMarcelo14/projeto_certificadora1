@@ -1,19 +1,15 @@
+datasource db {
+  provider = "postgresql" // ou outro banco: mysql, sqlite etc.
+  url      = env("DATABASE_URL")
+}
+
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-model Produto {
-  id          Int    @id @default(autoincrement())
-  nome        String
-  marca       String
-  descricao   String
-  quantidade  Int
-}
+// -------------------------------------------------
+// Models do NextAuth (já existentes)
+// -------------------------------------------------
 
 model User {
   id            String          @id @default(cuid())
@@ -23,13 +19,21 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  // Optional for WebAuthn support
   Authenticator Authenticator[]
- 
+
+  // Novos campos:
+  // Controlam se o usuário é aprovado e se é admin
+  isApproved Boolean @default(false)
+  isAdmin    Boolean @default(false)
+
+  // Relacionamento com as doações que esse usuário registrou
+  donations Donation[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Notice    Notice[]
 }
- 
+
 model Account {
   userId            String
   type              String
@@ -42,34 +46,34 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([provider, providerAccountId])
 }
- 
+
 model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
- 
+
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@id([identifier, token])
 }
- 
-// Optional for WebAuthn support
+
+// Modelo opcional do NextAuth (WebAuthn)
 model Authenticator {
   credentialID         String  @unique
   userId               String
@@ -79,8 +83,52 @@ model Authenticator {
   credentialDeviceType String
   credentialBackedUp   Boolean
   transports           String?
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([userId, credentialID])
+}
+
+// -------------------------------------------------
+// Modelos para Produtos e Doações (Estoque)
+// -------------------------------------------------
+
+model Product {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+
+  // Relação com as doações deste produto
+  donations Donation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Cada registro de doação (ou entrada de estoque)
+model Donation {
+  id String @id @default(cuid())
+
+  // Qual produto está sendo doado?
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  // Quem registrou esta doação?
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  quantity Int
+  notes    String? // campo para quem quiser registrar quem doou, observações etc.
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notice {
+  id        String   @id @default(cuid())
+  text      String
+  adminId   String
+  admin     User     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
