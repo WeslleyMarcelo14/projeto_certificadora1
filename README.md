@@ -65,8 +65,6 @@ theme: {
 }
 ```
 
-````
-
 ![Paleta de Cores](./public/colors.jpg)
 
 ---
@@ -191,13 +189,3 @@ Para **atualizar** quando houver uma nova versão no Docker Hub:
 docker compose pull
 docker compose up -d
 ```
-
----
-
-## Licença
-
-Este projeto está disponível sob a licença [MIT](LICENSE).
-Fique à vontade para contribuir, abrir issues e realizar melhorias conforme necessário.
-
-```
-````
