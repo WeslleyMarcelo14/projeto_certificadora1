@@ -1,12 +1,6 @@
 import { LayoutGrid, ClipboardList, Boxes, Users, Package, Settings } from "lucide-react";
 
-/**
- * Gera a lista de menus do sistema, incluindo menus administrativos quando necessário.
- *
- * @param {boolean} isAdmin - Indica se o usuário tem permissões administrativas (padrão: true).
- * @returns {Array} - Lista estruturada de menus com grupos e itens.
- */
-export const getMenuList = (isAdmin = true) =>
+export const getMenuList = (isAdmin = true, isApproved = true) =>
   [
     {
       groupLabel: "",
@@ -19,7 +13,7 @@ export const getMenuList = (isAdmin = true) =>
         },
       ],
     },
-    {
+    isApproved && {
       groupLabel: "Gerenciamento",
       menus: [
         { href: "/tarefas", label: "Tarefas", icon: ClipboardList },
@@ -37,4 +31,4 @@ export const getMenuList = (isAdmin = true) =>
       groupLabel: "Configurações",
       menus: [{ href: "/perfil", label: "Perfil", icon: Settings }],
     },
-  ].filter(Boolean); // Remove entradas falsas caso `isAdmin` seja falso
+  ].filter(Boolean);
