@@ -1,6 +1,6 @@
 // testInclusion.js
 
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -16,9 +16,9 @@ async function testInclusion() {
       },
     });
 
-    console.log('Produto inserido com sucesso:', novoProduto);
+    console.log("Produto inserido com sucesso:", novoProduto);
   } catch (error) {
-    console.error('Erro ao inserir o produto:', error);
+    console.error("Erro ao inserir o produto:", error);
   } finally {
     await prisma.$disconnect();
   }
