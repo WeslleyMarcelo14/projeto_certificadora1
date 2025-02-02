@@ -4,7 +4,6 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 
 const TarefasPage = () => (
   <ContentLayout title="Tarefas">
-    {/* Navegação breadcrumb */}
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
@@ -25,8 +24,7 @@ const TarefasPage = () => (
       </BreadcrumbList>
     </Breadcrumb>
 
-    {/* Conteúdo sobre tarefas */}
-    <section className="mt-6 p-6 bg-white rounded-lg shadow">
+    <section className="mt-6 p-6 bg-white rounded-lg shadow-sm border">
       <h2 className="text-xl font-semibold">Gerenciamento de Tarefas</h2>
       <p className="text-gray-600 mt-2">Aqui você pode criar, editar, excluir e acompanhar suas tarefas.</p>
     </section>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { LogOut, Ellipsis } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
@@ -13,13 +14,14 @@ import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/comp
 
 const Menu = ({ isOpen }) => {
   const pathname = usePathname();
-  const menuList = getMenuList(pathname);
+  const { data: session } = useSession();
+  const { isAdmin, isApproved } = session?.user || {};
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
       <nav className="mt-8 h-full w-full">
         <ul className="flex flex-col min-h-[calc(100vh-132px)] lg:min-h-[calc(100vh-104px)] items-start space-y-1 px-2">
-          {menuList.map(({ groupLabel, menus }, index) => (
+          {getMenuList(isAdmin, isApproved).map(({ groupLabel, menus }, index) => (
             <li key={index} className={cn("w-full", groupLabel && "pt-5")}>
               {groupLabel && <MenuGroupLabel groupLabel={groupLabel} isOpen={isOpen} />}
               <MenuItems menus={menus} pathname={pathname} isOpen={isOpen} />
@@ -32,10 +34,9 @@ const Menu = ({ isOpen }) => {
   );
 };
 
-// Exibe o nome do grupo ou um tooltip caso o menu esteja fechado
 const MenuGroupLabel = ({ groupLabel, isOpen }) =>
   isOpen ? (
-    <p className="text-sm font-medium text-muted-foreground px-4 pb-2 max-w-[248px] truncate">{groupLabel}</p>
+    <p className="text-base font-medium text-muted-foreground px-4 pb-2 max-w-[248px] truncate">{groupLabel}</p>
   ) : (
     <TooltipProvider>
       <Tooltip delayDuration={100}>
@@ -47,7 +48,6 @@ const MenuGroupLabel = ({ groupLabel, isOpen }) =>
     </TooltipProvider>
   );
 
-// Renderiza os itens do menu, tratando submenus separadamente
 const MenuItems = ({ menus, pathname, isOpen }) =>
   menus.map(({ href, label, icon: Icon, active, submenus }, idx) => (
     <div key={idx} className="w-full">
@@ -73,7 +73,6 @@ const MenuItems = ({ menus, pathname, isOpen }) =>
     </div>
   ));
 
-// Componente do botão de logout fixado no rodapé do menu
 const LogoutButton = ({ isOpen }) => {
   const handleLogout = async () => await signOut({ callbackUrl: "/auth/login" });
 

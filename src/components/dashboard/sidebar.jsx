@@ -24,12 +24,9 @@ const Sidebar = () => {
         settings.disabled && "hidden"
       )}
     >
-      {/* Botão para alternar o estado do Sidebar */}
       <SidebarToggle isOpen={isOpen} setIsOpen={toggleOpen} />
 
-      {/* Conteúdo do Sidebar */}
       <div onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} className="relative h-full flex flex-col px-3 py-4 overflow-y-auto shadow-md dark:shadow-zinc-800">
-        {/* Botão de navegação para o Dashboard */}
         <Button className={cn("transition-transform ease-in-out duration-300 mb-1", isSidebarOpen ? "translate-x-0" : "translate-x-1")} variant="link" asChild>
           <Link href="/dashboard" className="flex items-center gap-2">
             <PanelsTopLeft className="w-6 h-6 mr-1" />
@@ -44,7 +41,6 @@ const Sidebar = () => {
           </Link>
         </Button>
 
-        {/* Menu de navegação dentro do Sidebar */}
         <Menu isOpen={isSidebarOpen} />
       </div>
     </aside>
