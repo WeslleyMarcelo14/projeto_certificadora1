@@ -5,18 +5,39 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const authOptions = {
-  adapter: PrismaAdapter(prisma), // O PrismaAdapter já cuida da criação de User e Account na database, não precisa fazer nada
+export const authOptions = {
+  adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
-  session: { strategy: "jwt" }, // Já é o padrão do NextAuth, pode ser omitido
+  session: { strategy: "jwt" }, // Importante manter "jwt" para persistência
   pages: { signIn: "/auth/login" }, // Se quiser uma página customizada
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        const dbUser = await prisma.user.findUnique({
+          where: { id: user.id },
+          select: { isAdmin: true, isApproved: true },
+        });
+
+        token.isAdmin = dbUser?.isAdmin || false;
+        token.isApproved = dbUser?.isApproved || false;
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
+      session.user.id = token.id;
+      session.user.isAdmin = token.isAdmin;
+      session.user.isApproved = token.isApproved;
+      return session;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);
-
 export { handler as GET, handler as POST };
