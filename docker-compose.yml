@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_container
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: example_user # Usuário fictício do banco
+      POSTGRES_PASSWORD: example_password # Senha fictícia do banco
+      POSTGRES_DB: example_db # Nome fictício do banco de dados
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  nextjs:
+    image: othallys/certificadora1:latest # Usando a imagem do Docker Hub para facilitar atualização
+    container_name: nextjs_container
+    restart: always
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+    environment:
+      NEXTAUTH_URL: "http://localhost:4000"
+      GOOGLE_CLIENT_ID: "123456789012-exampleid.apps.googleusercontent.com" # Exemplo de Client ID do Google OAuth
+      GOOGLE_CLIENT_SECRET: "GOCSPX-EXAMPLE-SECRET-KEY-12345" # Exemplo de Secret Key do Google OAuth
+      NEXTAUTH_SECRET: "EXAMPLE-SECURE-SECRET-KEY" # Exemplo de chave secreta para autenticação
+      DATABASE_URL: "postgresql://example_user:example_password@postgres:5432/example_db" # Exemplo de URL do banco de dados
+    volumes:
+      - nextjs_data:/app # Volume opcional para persistência (se necessário)
+
+volumes:
+  postgres_data:
+  nextjs_data:
