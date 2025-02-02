@@ -13,8 +13,8 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
-  session: { strategy: "jwt" }, // Importante manter "jwt" para persistência
-  pages: { signIn: "/auth/login" }, // Se quiser uma página customizada
+  session: { strategy: "jwt" },
+  pages: { signIn: "/auth/login" },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -24,14 +24,16 @@ export const authOptions = {
           select: { isAdmin: true, isApproved: true },
         });
 
-        // token.isAdmin = dbUser?.isAdmin || false;
-        // token.isApproved = dbUser?.isApproved || false;
-        token.isAdmin = true;
-        token.isApproved = true;
+        if (process.env.FORCE_ADMIN === "true") {
+          token.isAdmin = true;
+          token.isApproved = true;
+        } else {
+          token.isAdmin = dbUser?.isAdmin || false;
+          token.isApproved = dbUser?.isApproved || false;
+        }
       }
       return token;
     },
-
     async session({ session, token }) {
       session.user.id = token.id;
       session.user.isAdmin = token.isAdmin;
