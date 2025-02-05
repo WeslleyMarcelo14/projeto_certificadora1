@@ -35,8 +35,8 @@ export const POST = async (req) => {
 
     const { text } = await req.json();
 
-    if (!text?.trim() || text.trim().length > 200) {
-      return NextResponse.json({ error: "Aviso inválido ou muito longo (máx. 200 caracteres)" }, { status: 400 });
+    if (!text?.trim() || text.trim().length > 220) {
+      return NextResponse.json({ error: "Aviso inválido ou muito longo (máx. 220 caracteres)" }, { status: 400 });
     }
 
     const notice = await prisma.notice.create({
