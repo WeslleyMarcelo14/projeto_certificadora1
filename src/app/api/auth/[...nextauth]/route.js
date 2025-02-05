@@ -17,30 +17,34 @@ export const authOptions = {
   pages: { signIn: "/auth/login" },
   callbacks: {
     async jwt({ token, user }) {
+      // No primeiro login, atribuímos o ID ao token
       if (user) {
         token.id = user.id;
+      }
 
-        // Agora que o PrismaAdapter já criou o usuário, podemos buscá-lo e atualizá-lo
-        let dbUser = await prisma.user.findUnique({
-          where: { id: user.id },
+      // Se o token já possui um ID, buscamos os dados atualizados do usuário
+      if (token.id) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id },
           select: { isAdmin: true, isApproved: true },
         });
 
-        if (!dbUser) {
-          return token; // Se não existir, apenas retorna o token sem erro
+        if (dbUser) {
+          // Se você tem uma lógica para forçar o admin, ela pode ser mantida aqui
+          if (process.env.FORCE_ADMIN === "true" && !dbUser.isAdmin) {
+            await prisma.user.update({
+              where: { id: token.id },
+              data: { isAdmin: true, isApproved: true },
+            });
+            token.isAdmin = true;
+            token.isApproved = true;
+          } else {
+            token.isAdmin = dbUser.isAdmin;
+            token.isApproved = dbUser.isApproved;
+          }
         }
-
-        if (process.env.FORCE_ADMIN === "true" && !dbUser.isAdmin) {
-          // Atualiza o usuário para admin apenas se ainda não for
-          dbUser = await prisma.user.update({
-            where: { id: user.id },
-            data: { isAdmin: true, isApproved: true },
-          });
-        }
-
-        token.isAdmin = dbUser.isAdmin;
-        token.isApproved = dbUser.isApproved;
       }
+
       return token;
     },
 
