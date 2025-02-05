@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { FiShield, FiUser, FiAlertCircle } from "react-icons/fi";
 
 const UserType = {
-  PENDING: "Aguardando Aprovação",
+  PENDING: "Visitante",
   COMMON: "Colaborador",
   ADMIN: "Administrador",
 };
