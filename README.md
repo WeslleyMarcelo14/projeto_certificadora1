@@ -86,17 +86,11 @@ FORCE_ADMIN=true
 
 ## Funcionalidades Principais
 
-### 1. Módulo de Tarefas
-
-- Criação, edição e exclusão de tarefas
-- Acompanhamento do progresso
-- Organização por status e prioridades
-
-### 2. Módulo de Estoque
+### 1. Módulo de Estoque
 
 - Registro de itens doados
-- Controle de quantidade e estado do estoque
-- Relatórios detalhados sobre entradas e saídas
+- Controle de quantidade do estoque
+- Registro dos produtos aceitos
 
 ### 3. Gerenciamento de Usuários
 
