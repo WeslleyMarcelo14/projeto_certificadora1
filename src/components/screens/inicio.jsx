@@ -58,7 +58,7 @@ const Dashboard = () => {
   const AddNoticeDialog = ({ onNoticeCreated }) => {
     const [noticeText, setNoticeText] = useState("");
     const [loadingDialog, setLoadingDialog] = useState(false);
-    const maxNoticeLength = 200;
+    const maxNoticeLength = 220;
 
     async function handleSubmitNotice() {
       if (!noticeText.trim()) {
@@ -99,7 +99,7 @@ const Dashboard = () => {
             <DialogTitle>Criar Aviso</DialogTitle>
             <DialogDescription>Digite o aviso (máx. 200 caracteres). Apenas administradores podem criar avisos.</DialogDescription>
           </DialogHeader>
-          <Textarea placeholder="Digite o aviso..." value={noticeText} maxLength={maxNoticeLength} onChange={(e) => setNoticeText(e.target.value)} className="mt-4 resize-none" />
+          <Textarea placeholder="Digite o aviso..." value={noticeText} maxLength={maxNoticeLength} rows={6} onChange={(e) => setNoticeText(e.target.value)} className="mt-4 resize-none" />
           <DialogFooter>
             <Button onClick={handleSubmitNotice} disabled={loadingDialog}>
               {loadingDialog ? "Salvando..." : "Salvar"}
@@ -215,7 +215,7 @@ const Dashboard = () => {
           {/* Grid de KPI Cards */}
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 mt-6">
             <KpiCard titulo="Usuários Totais" valor={data.usersCount} descricao="Total de usuários cadastrados" icon={FiUsers} />
-            <KpiCard titulo="Usuários Pendentes" valor={data.pendingUsersCount} descricao="Usuários aguardando aprovação" icon={FiUserX} />
+            <KpiCard titulo="Usuários Visitantes" valor={data.pendingUsersCount} descricao="Usuários aguardando aprovação (visitantes)" icon={FiUserX} />
             <KpiCard titulo="Produtos" valor={data.productsCount} descricao="Produtos cadastrados" icon={FiBox} />
             <KpiCard titulo="Doações" valor={data.donationsCount} descricao="Doações registradas" icon={FiHeart} />
             <KpiCard titulo="Estoque Total" valor={data.totalStock} descricao="Unidades doadas" icon={FiClipboard} />
