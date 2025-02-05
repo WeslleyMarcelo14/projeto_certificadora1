@@ -32,6 +32,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Notice    Notice[]
+
+  // Relações com tarefas
+  createdTasks  Tarefa[] @relation("createdTasks")
+  assignedTasks Tarefa[] @relation("assignedTasks")
 }
 
 model Account {
@@ -131,4 +135,28 @@ model Notice {
   admin     User     @relation(fields: [adminId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+/// Enum para prioridade das tarefas
+enum TaskPriority {
+  URGENTE
+  IMPORTANTE
+  NORMAL
+}
+
+/// Modelo de Tarefa para o sistema de gerenciamento de tarefas
+model Tarefa {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  completed   Boolean  @default(false)
+  createdBy   String
+  assignedTo  String
+  priority    TaskPriority  @default(NORMAL)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relações com usuários (criador e atribuído)
+  creator  User @relation("createdTasks", fields: [createdBy], references: [id], onDelete: Cascade)
+  assignee User @relation("assignedTasks", fields: [assignedTo], references: [id], onDelete: Cascade)
 }
