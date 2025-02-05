@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FiMail, FiUser, FiKey, FiShield, FiAlertCircle, FiCheckCircle, FiXCircle } from "react-icons/fi";
 
 const UserType = {
-  PENDING: "Aguardando Aprovação",
+  PENDING: "Visitante",
   COMMON: "Colaborador",
   ADMIN: "Administrador",
 };
