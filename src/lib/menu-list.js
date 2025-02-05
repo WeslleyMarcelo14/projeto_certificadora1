@@ -16,7 +16,7 @@ export const getMenuList = (isAdmin = true, isApproved = true) =>
     isApproved && {
       groupLabel: "Gerenciamento",
       menus: [
-        // { href: "/tarefas", label: "Tarefas", icon: ClipboardList },
+        { href: "/tarefas", label: "Tarefas", icon: ClipboardList },
         { href: "/estoque", label: "Estoque", icon: Boxes },
       ],
     },
