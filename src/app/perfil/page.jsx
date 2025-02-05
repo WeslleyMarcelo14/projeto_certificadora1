@@ -3,6 +3,12 @@ import ContentLayout from "@/components/dashboard/content-layout";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import SettingsProfile from "@/components/screens/perfil";
 
+// Metadata
+export const metadata = {
+  title: "Painel - Perfil",
+  description: "Gerencie suas informações pessoais",
+};
+
 const PerfilPage = () => (
   <ContentLayout title="Perfil">
     <Breadcrumb className="mb-6">
