@@ -13,16 +13,17 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
-  session: { strategy: "jwt" },
+  session: {
+    strategy: "jwt",
+    maxAge: 60 * 5,
+  },
   pages: { signIn: "/auth/login" },
   callbacks: {
     async jwt({ token, user }) {
-      // No primeiro login, atribuímos o ID ao token
       if (user) {
         token.id = user.id;
       }
 
-      // Se o token já possui um ID, buscamos os dados atualizados do usuário
       if (token.id) {
         const dbUser = await prisma.user.findUnique({
           where: { id: token.id },
@@ -30,7 +31,7 @@ export const authOptions = {
         });
 
         if (dbUser) {
-          // Se você tem uma lógica para forçar o admin, ela pode ser mantida aqui
+          // força o usuário a ser admin
           if (process.env.FORCE_ADMIN === "true" && !dbUser.isAdmin) {
             await prisma.user.update({
               where: { id: token.id },
@@ -49,9 +50,20 @@ export const authOptions = {
     },
 
     async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.isAdmin = token.isAdmin;
-      session.user.isApproved = token.isApproved;
+      // sempre que o token for atualizado, atualiza a sessão
+      if (token?.id) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id },
+          select: { isAdmin: true, isApproved: true },
+        });
+
+        session.user = {
+          ...session.user,
+          id: token.id,
+          isAdmin: dbUser ? dbUser.isAdmin : token.isAdmin,
+          isApproved: dbUser ? dbUser.isApproved : token.isApproved,
+        };
+      }
       return session;
     },
   },
