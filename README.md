@@ -170,13 +170,21 @@ services:
     ports:
       - "4000:4000"
     environment:
-      GOOGLE_CLIENT_ID: "seu_client_id"
-      GOOGLE_CLIENT_SECRET: "seu_client_secret"
-      NEXTAUTH_SECRET: "uma_secret_qualquer"
-      PORT: 4000
+      NEXTAUTH_URL=http://localhost:3000/
+      GOOGLE_CLIENT_ID=your_google_client_id
+      GOOGLE_CLIENT_SECRET=your_google_client_secret
+      NEXTAUTH_SECRET=your_nextauth_secret
+      DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
+      PORT=4000
+      TOKEN_DOCKER=your_docker_token
+      FORCE_ADMIN=true
 ```
 
 > Para utilizar um banco de dados PostgreSQL, inclua o serviço correspondente no `docker-compose.yml` e configure a `DATABASE_URL` conforme necessário.
+
+**Para conseguir a chave** https://console.cloud.google.com/ - Escolher a chave do tipo: OAuth 2.0 Client IDs
+
+**Nota:** Substitua os valores de exemplo por suas credenciais reais. Nunca compartilhe informações sensíveis em repositórios públicos.
 
 Para atualizar a imagem:
 
