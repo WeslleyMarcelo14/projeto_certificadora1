@@ -15,34 +15,35 @@ export const authOptions = {
   ],
   session: {
     strategy: "jwt",
-    maxAge: 60 * 5,
+    maxAge: 60 * 5, // 5 minutos
   },
   pages: { signIn: "/auth/login" },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-      }
 
-      if (token.id) {
+        if (process.env.FORCE_ADMIN === "true" && !user.isAdmin) {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { isAdmin: true, isApproved: true },
+          });
+          token.isAdmin = true;
+          token.isApproved = true;
+        } else {
+          token.isAdmin = user.isAdmin;
+          token.isApproved = user.isApproved;
+        }
+      } else if (token.id) {
+        // Atualiza o token a cada requisição, garantindo que qualquer mudança no banco seja refletida
         const dbUser = await prisma.user.findUnique({
           where: { id: token.id },
           select: { isAdmin: true, isApproved: true },
         });
 
         if (dbUser) {
-          // força o usuário a ser admin
-          if (process.env.FORCE_ADMIN === "true" && !dbUser.isAdmin) {
-            await prisma.user.update({
-              where: { id: token.id },
-              data: { isAdmin: true, isApproved: true },
-            });
-            token.isAdmin = true;
-            token.isApproved = true;
-          } else {
-            token.isAdmin = dbUser.isAdmin;
-            token.isApproved = dbUser.isApproved;
-          }
+          token.isAdmin = dbUser.isAdmin;
+          token.isApproved = dbUser.isApproved;
         }
       }
 
@@ -50,8 +51,8 @@ export const authOptions = {
     },
 
     async session({ session, token }) {
-      // sempre que o token for atualizado, atualiza a sessão
       if (token?.id) {
+        // Busca diretamente no banco para garantir dados sempre atualizados
         const dbUser = await prisma.user.findUnique({
           where: { id: token.id },
           select: { isAdmin: true, isApproved: true },
@@ -60,8 +61,8 @@ export const authOptions = {
         session.user = {
           ...session.user,
           id: token.id,
-          isAdmin: dbUser ? dbUser.isAdmin : token.isAdmin,
-          isApproved: dbUser ? dbUser.isApproved : token.isApproved,
+          isAdmin: dbUser ? dbUser.isAdmin : false, // Se não encontrar, assume que não é admin
+          isApproved: dbUser ? dbUser.isApproved : false,
         };
       }
       return session;
