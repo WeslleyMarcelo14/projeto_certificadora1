@@ -2,6 +2,14 @@
 
 O Sistema de Gestão e Controle de Tarefas e Estoque é uma plataforma completa para organizações que necessitam de um ambiente centralizado para gerenciar tarefas e controlar doações de estoque. Ele automatiza processos de registro, acompanhamento e edição de dados, oferecendo funcionalidades específicas para administradores e usuários comuns.
 
+Acesse a aplicação web em: https://certificadora1.43464994.xyz/
+
+## Integrantes
+- Allan Vinicios Ferraz dos Santos
+- Henry Ossamu Chida
+- Thallys Silva dos Santos Correia
+- Weslley Marcelo Pereira
+
 ## Sumário
 
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
@@ -123,8 +131,14 @@ FORCE_ADMIN=true
 3. **Configure as variáveis de ambiente no arquivo `.env`:**
 
    ```env
-   GOOGLE_CLIENT_ID=seu_client_id
-   GOOGLE_CLIENT_SECRET=seu_client_secret
+   NEXTAUTH_URL=http://localhost:3000/
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+   NEXTAUTH_SECRET=your_nextauth_secret
+   DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
+   PORT=4000
+   TOKEN_DOCKER=your_docker_token
+   FORCE_ADMIN=true
    ```
 
 4. **Execute o servidor de desenvolvimento:**
