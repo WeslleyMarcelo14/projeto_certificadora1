@@ -4,9 +4,9 @@ O Sistema de Gestão e Controle de Tarefas e Estoque é uma plataforma completa 
 
 Acesse a aplicação web em: https://certificadora1.43464994.xyz/
 
-# Projeto para Disciplina EC45G - Certificadora Da Competência 1 - C51 (2024_02)
+### Projeto para Disciplina EC45G - Certificadora Da Competência 1 - C51 (2024_02)
 
-# Integrantes
+### Integrantes
 - Allan Vinicios Ferraz dos Santos
 - Henry Ossamu Chida
 - Thallys Silva dos Santos Correia
