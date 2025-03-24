@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "test": "npx cypress open",
     "start": "next start -p $PORT",
     "lint": "next lint"
   },
@@ -27,6 +28,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
+    "cypress": "^14.2.0",
     "immer": "^10.1.1",
     "lucide-react": "^0.474.0",
     "next": "^15.1.6",
